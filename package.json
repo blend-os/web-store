@@ -8,6 +8,8 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "start": "electron .",
+    "icons": "electron-icon-maker --input=./static/icon.png --output=./build/",
+    "electron-builder": "electron-builder",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
@@ -20,17 +22,17 @@
   },
   "devDependencies": {
     "electron": "^23.1.4",
+    "electron-icon-maker": "^0.0.5",
     "electron-builder": "^23.6.0"
   },
   "build": {
-    "appId": "rs2009.modren",
-    "productName": "Modren Store",
+    "appId": "org.blend.web-store",
+    "productName": "Web Store",
     "asar": false,
     "linux": {
-      "target": [
-        "appimage"
-      ],
+      "target": ["tar.gz"],
       "category": "System",
+      "icon": "icons/png",
       "maintainer": "Rudra Saraswat"
     }
   }
