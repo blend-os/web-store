@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Web Store for blendOS",
   "main": "main.js",
-  "homepage": "https://ubuntu-web.org",
+  "homepage": "https://blendos.co",
   "author": "Rudra Saraswat",
   "license": "GPL-3.0-or-later",
   "scripts": {
