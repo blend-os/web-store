@@ -17,7 +17,7 @@ function createWindow() {
     }
   })
 
-  mainWindow.setMenu(null)
+  // mainWindow.setMenu(null)
 
   mainWindow.loadFile('src/index.html')
 }
@@ -80,7 +80,7 @@ app.whenReady().then(() => {
   app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder')
 
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders["User-Agent"] = "Chrome";
+    details.requestHeaders["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36";
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 
