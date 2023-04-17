@@ -48,7 +48,7 @@ function install () {
 }
 
 function remove () {
-    ipcRenderer.send('remove-wapp', app_name.replaceAll(' ', '-'))
+    ipcRenderer.send('remove-wapp', app_name.replaceAll(' ', '-').replaceAll('\'', ''))
     $('#install_button').text('Removing...')
     $('#install_button').attr('disabled', 'disabled');
     $('#install_button').attr('onclick', '')

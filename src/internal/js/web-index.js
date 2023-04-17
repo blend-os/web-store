@@ -19,6 +19,11 @@ function get_featured_apps () {
                 app_name = data.app.name
                 app_data = data
 
+                // Set app button color
+                if (data.app.accent != "#000" && data.app.accent != "#000000") {
+                    $('#featured-card' + card_i + '-checkout').css('background-color', data.app.accent)
+                }
+
                 // Show app.
                 $('#featured-card' + card_i + '-card').css('display', 'flex')
 
@@ -50,6 +55,14 @@ function get_top_apps () {
         })
 
         // Apps
+        try { let app_checkout_accent_i = 0
+            $('[id^="app-card"][id$="-checkout"]').each(function () {
+                if (data.latest_apps[app_checkout_accent_i].accent != "#000" && data.latest_apps[app_checkout_accent_i].accent != "#000000") {
+                    $('#' + this.id).css('background-color', data.latest_apps[app_checkout_accent_i].accent)
+                }
+                app_checkout_accent_i++
+            }) } catch {}
+
         try { let app_title_i = 0
         $('[id^="app-card"][id$="-title"]').each(function () {
             $('#' + this.id).text(data.latest_apps[app_title_i].name)

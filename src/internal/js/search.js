@@ -8,6 +8,14 @@ function apps_search() {
         })
 
         // Apps
+        try { let app_checkout_accent_i = 0
+            $('[id^="app-card"][id$="-checkout"]').each(function () {
+                if (data.results[app_checkout_accent_i].accent != "#000" && data.results[app_checkout_accent_i].accent != "#000000") {
+                    $('#' + this.id).css('background-color', data.results[app_checkout_accent_i].accent)
+                }
+                app_checkout_accent_i++
+            }) } catch {}
+
         try {
             let app_title_i = 0
             $('[id^="app-card"][id$="-title"]').each(function () {

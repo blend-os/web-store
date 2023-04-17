@@ -7,6 +7,7 @@
 
     <style>
       * { user-select: none; -webkit-user-drag: none; }
+      body, .navbar { background: rgb(247, 245, 245) !important; }
       button { cursor: default !important; }
     </style>
   </head>
@@ -34,8 +35,8 @@
       webview.setAttribute("webpreferences", "contextIsolation=false")
 
       webview.addEventListener('dom-ready', () => {
-        webview.insertCSS('* { user-select: none; -webkit-user-drag: none; } button { @extend: shadow-none; color: white !important; }')
-        webview.executeJavaScript("$('button').addClass('shadow-none');0")
+        webview.insertCSS('* { user-select: none; -webkit-user-drag: none; } button { @extend: shadow-none; color: white !important; } body { background: rgb(247, 245, 245) !important; }')
+        webview.executeJavaScript("$('button').addClass('shadow-none');")
       })
 
       document.body.appendChild(webview)

@@ -1,4 +1,25 @@
+var used_colors = []
+
 const $ = require("jquery");
+
+var used_colors = []
+
+// https://stackoverflow.com/a/20114692 (Zaheer Ahmed)
+function get_dark_color() {
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += Math.floor(Math.random() * 10);
+    }
+
+    if (used_colors.includes(color)) {
+        color = get_dark_color()
+        used_colors.push(color)
+    } else {
+        used_colors.push(color)
+    }
+
+    return color;
+}
 
 function truncateText(text, maxLength) {
     let truncated = text
@@ -37,10 +58,10 @@ function show_app_cards (rows, columns) {
                                     <h5 class="card-title card` + app + `-title" id="app-card` + app + `-title">Loading..</h5>
                                     <p class="card-text card` + app + `-text" id="app-card` + app + `-summary">Loading...</p>
                                     <p class="fw-bold card-text card` + app + `-category" id="app-card` + app + `-category">Loading...</p>
-                                    <button onclick="check_out('` + app + `')" class="btn btn-primary install">Checkout</button>
                                 </div>
                             </div>
                         </div>
+                        <button id="app-card` + app + `-checkout" onclick="check_out('` + app + `')" style="background-color: ${get_dark_color()}; border: none; padding-top: 10px; padding-bottom: 10px; font-weight: bold; border-top-left-radius: 0; border-top-right-radius: 0;" class="btn btn-primary install">View this app</button>
                     </div>
                 </div>
             `)
@@ -84,10 +105,10 @@ function show_featured_cards (rows, columns) {
                                     <h5 class="card-title featured-card` + app + `-title" id="featured-card` + app + `-title">Loading..</h5>
                                     <p class="card-text featured-card` + app + `-text" id="featured-card` + app + `-summary">Loading...</p>
                                     <p class="fw-bold card-text featured-card` + app + `-category" id="featured-card` + app + `-category">Loading...</p>
-                                    <button onclick="featured_check_out('` + app + `')" class="btn btn-primary install">Checkout</button>
                                 </div>
                             </div>
                         </div>
+                        <button id="featured-card` + app + `-checkout" onclick="check_out('` + app + `')" style="background-color: #000; border: none; padding-top: 10px; padding-bottom: 10px; font-weight: bold; border-top-left-radius: 0; border-top-right-radius: 0;" class="btn btn-primary install">View this app</button>
                     </div>
                 </div>
             `)

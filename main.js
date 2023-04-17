@@ -1,5 +1,5 @@
-const { app, BrowserWindow, Menu, ipcMain, shell, Notification } = require('electron')
-const { exec } = require("child_process")
+const { app, BrowserWindow, Menu, ipcMain, shell, Notification, session } = require('electron')
+const { exec, spawn } = require("child_process")
 const path = require('path')
 
 var mainWindow = undefined
@@ -16,6 +16,8 @@ function createWindow() {
       webviewTag: true
     }
   })
+
+  mainWindow.setMenu(null)
 
   mainWindow.loadFile('src/index.html')
 }
@@ -49,6 +51,12 @@ function createAppWindow() {
       click: function () {
         mainWindow.webContents.goBack()
       }
+    },
+    {
+      label: 'Reload',
+      click: function () {
+        mainWindow.reload()
+      }
     }
   ]
 
@@ -64,13 +72,23 @@ function createAppWindow() {
 }
 
 app.whenReady().then(() => {
-  console.log(process.argv)
+  app.commandLine.appendSwitch('ignore-gpu-blacklist')
+  app.commandLine.appendSwitch('enable-gpu-rasterization')
+  app.commandLine.appendSwitch('enable-accelerated-video')
+  app.commandLine.appendSwitch('enable-accelerated-video-decode')
+  app.commandLine.appendSwitch('use-gl', 'desktop')
+  app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder')
+
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders["User-Agent"] = "Chrome";
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
+  });
+
   if (process.argv.includes('--class-name') && process.argv.includes('--url')) {
     app.setName(process.argv[process.argv.indexOf('--class-name') + 1])
     createAppWindow()
 
     mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-      e.preventDefault();
       shell.openExternal(url);
     });
 
@@ -91,9 +109,9 @@ app.whenReady().then(() => {
 })
 
 ipcMain.on('gen-install-wapp', (event, app_data) => {
-  exec(`blend-wapp-inst '${app_data['app']['name'].replace("'", "\\'")}' '${app_data['app']['category'].replace("'", "\\'")}' '${app_data['app']['summary'].replace("'", "\\'")}' '${app_data['app']['name'].replaceAll(' ', '-').replace("'", "\\'")}' '${app_data['app']['logo'].replace("'", "\\'")}' 'Network;BlendWebApp;' 'Web;App;' '${app_data['app']['pwa_url'].replace("'", "\\'")}'`, (error, stdout, stderr) => {
-    if (error) {
-      console.log(stderr)
+  let web_app_inst = spawn('blend-wapp-inst', [app_data['app']['name'], app_data['app']['category'], app_data['app']['summary'], app_data['app']['name'].replaceAll(' ', '-').replace("'", ""), app_data['app']['logo'], 'Network;BlendWebApp;', 'Web;App;', app_data['app']['pwa_url']])
+  web_app_inst.on('close', code => {
+    if (code != 0) {
       mainWindow.webContents.executeJavaScript("webview.send('is-wapp-installed', 'failed_install')")
     } else {
       mainWindow.webContents.executeJavaScript("webview.send('is-wapp-installed', true)")
