@@ -71,6 +71,12 @@
       }
 
       page('web')
+
+      webview.addEventListener('ipc-message', e => {
+        if (event.channel == 'page') {
+          page(event.args[0])
+        }
+      })
     </script>
 
     <!-- Import bootstrap JS bundle. -->

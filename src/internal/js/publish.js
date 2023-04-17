@@ -1,5 +1,6 @@
 var $ = require('jquery')
 var bcrypt = require("bcrypt");
+const { ipcRenderer } = require('electron');
 
 async function publish() {
     $(".is-invalid").removeClass("is-invalid")
@@ -12,7 +13,7 @@ async function publish() {
             return false
         }
 
-        if (this.id == 'website' && $(id).val().length < 4) {
+        if (this.id == 'website' && $(this).val().length < 4) {
             $(this).addClass('is-invalid')
             isValid = false
             return false
@@ -30,8 +31,12 @@ async function publish() {
             'name': $('#name').val(),
             'website': $('#website').val(),
             'summary': summary,
-        }).fail(function () {
+        }).fail(() => {
             alert('An error occured.')
+        }).done(() => {
+            $('#publish-button').attr('disabled', 'disabled')
+            $('#publish-button').text('Submitted')
+            setTimeout(() => { ipcRenderer.sendToHost('page', 'web') }, 1500)
         })
     }
 }

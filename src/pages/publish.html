@@ -1,61 +1,64 @@
 <html>
-  <head>
-    <title>Apps</title>
 
-    <!-- Import bootstrap v5.0. -->
-    <link href="../external/css/bootstrap.min.css" rel="stylesheet">
+<head>
+  <title>Apps</title>
 
-    <style>
-      .form-group {
-        margin-bottom: 15px;
-      }
+  <!-- Import bootstrap v5.0. -->
+  <link href="../external/css/bootstrap.min.css" rel="stylesheet">
 
-      label {
-        margin-bottom: 5px;
-      }
-    </style>
-  </head>
+  <style>
+    .form-group {
+      margin-bottom: 15px;
+    }
 
-  <body>
-    <!-- Main container -->
-    <div class="container">
-      <div class="row">
-        <div class="container-fluid">
-          <form onsubmit="try { publish(); return false } catch (e) { console.log(e); return false; }">
-            <div class="form-group">
-              <label for="name">App name</label>
-              <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="App name">
-              <div class="invalid-feedback">This field is mandatory.</div>
-            </div>
-            <div class="form-group">
-              <label for="website">Website</label>
-              <input type="text" class="form-control" id="website" placeholder="Website URL">
-              <div class="invalid-feedback">Must be a valid URL.</div>
-            </div>
-            <div class="form-group">
-              <label for="summary">Summary</label>
-              <input type="text" class="form-control" id="summary" placeholder="Summary (you can leave this blank)">
-            </div>
-            <button type="submit" id="publish-button" class="btn btn-primary">Suggest</button>
-            <br><br>
-            <div class="form-group">
-              App suggestions are usually processed within 24 hours.
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row mt-4"></div>
-      <div class="row" id="results">
+    label {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Main container -->
+  <div class="container">
+    <div class="row">
+      <div class="container-fluid">
+        <form onsubmit="try { publish(); return false } catch (e) { console.log(e); return false; }">
+          <div class="form-group">
+            <label for="name">App name</label>
+            <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="App name">
+            <div class="invalid-feedback">This field is mandatory.</div>
+          </div>
+          <div class="form-group">
+            <label for="website">Website</label>
+            <input type="text" class="form-control" id="website" placeholder="Website URL">
+            <div class="invalid-feedback">Must be a valid URL.</div>
+          </div>
+          <div class="form-group">
+            <label for="summary">Summary</label>
+            <input type="text" class="form-control" id="summary" placeholder="Summary (you can leave this blank)">
+          </div>
+          <button type="submit" id="publish-button" style="background-color: black !important; border: none !important;"
+            class="btn btn-primary">Suggest</button>
+          <br><br>
+          <div class="form-group">
+            App suggestions are usually processed within 24 hours.
+          </div>
+        </form>
       </div>
     </div>
+    <div class="row mt-4"></div>
+    <div class="row" id="results">
+    </div>
+  </div>
 
-    <!-- Import publish.js -->
-    <script src="../internal/js/publish.js"></script>
+  <!-- Import publish.js -->
+  <script src="../internal/js/publish.js"></script>
 
-    <!-- Import common.js. -->
-    <script src="../internal/js/common.js"></script>
+  <!-- Import common.js. -->
+  <script src="../internal/js/common.js"></script>
 
-    <!-- Import bootstrap JS bundle. -->
-    <script src="../external/js/bootstrap.bundle.min.js"></script>
-  </body>
+  <!-- Import bootstrap JS bundle. -->
+  <script src="../external/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>
