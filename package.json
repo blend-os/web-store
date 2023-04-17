@@ -1,0 +1,37 @@
+{
+  "name": "blend-web-store",
+  "version": "1.0.0",
+  "description": "Web Store for blendOS",
+  "main": "main.js",
+  "homepage": "https://ubuntu-web.org",
+  "author": "Rudra Saraswat",
+  "license": "GPL-3.0-or-later",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "@electron/remote": "^2.0.9",
+    "@types/jquery": "^3.5.16",
+    "bcrypt": "^5.1.0",
+    "custom-electron-titlebar": "^4.2.0-beta.0",
+    "jquery": "^3.6.4"
+  },
+  "devDependencies": {
+    "electron": "^23.1.4",
+    "electron-builder": "^23.6.0"
+  },
+  "build": {
+    "appId": "rs2009.modren",
+    "productName": "Modren Store",
+    "asar": false,
+    "linux": {
+      "target": [
+        "appimage"
+      ],
+      "category": "System",
+      "maintainer": "Rudra Saraswat"
+    }
+  }
+}

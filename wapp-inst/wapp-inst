@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+name="$1"
+generic_name="$2"
+comment="$3"
+wapp="$4"
+icon="$5"
+categories="$6"
+keywords="$7"
+website="$8"
+
+# Desktop File
+mkdir -p ~/.local/share/applications
+echo -e "[Desktop Entry]
+Name=$name
+GenericName=$generic_name
+Comment=$comment
+Type=Application
+Exec=snow '$website' $wapp
+Icon=${HOME}/.local/share/wapp-icons/$(basename "$icon")
+Terminal=false
+StartupWMClass=$wapp
+Categories=$categories
+Keywords=$keywords" > "${HOME}/.local/share/applications/blend_wapp_${wapp}.desktop"
+mkdir -p "${HOME}/.local/share/wapp-icons"
+rm -f "${HOME}/.local/share/wapp-icons/$(basename "$icon")"
+wget -qO "${HOME}/.local/share/wapp-icons/$(basename "$icon")" "$icon" || true

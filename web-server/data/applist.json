@@ -1,0 +1,14 @@
+{
+    "featured_apps": [1],
+    "apps": {
+        "1": {
+            "name": "Mastodon.online",
+            "website": "mastodon.online",
+            "logo": "mastodon.online.png",
+            "summary": "A social platform that is community-owned and ad-free.",
+            "pwa_url": "mastodon.online",
+            "category": "Social",
+            "accent": "#2c8dda"
+        }
+    }
+}
