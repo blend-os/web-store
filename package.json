@@ -28,7 +28,7 @@
   "build": {
     "appId": "org.blend.web-store",
     "productName": "Web Store",
-    "asar": false,
+    "asar": true,
     "linux": {
       "target": ["tar.gz"],
       "category": "System",

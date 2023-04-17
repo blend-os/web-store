@@ -91,7 +91,7 @@ app.whenReady().then(() => {
 })
 
 ipcMain.on('gen-install-wapp', (event, app_data) => {
-  exec(`bash ${__dirname}/wapp-inst/wapp-inst '${app_data['app']['name'].replace("'", "\\'")}' '${app_data['app']['category'].replace("'", "\\'")}' '${app_data['app']['summary'].replace("'", "\\'")}' '${app_data['app']['name'].replaceAll(' ', '-').replace("'", "\\'")}' '${app_data['app']['logo'].replace("'", "\\'")}' 'Network;BlendWebApp;' 'Web;App;' '${app_data['app']['pwa_url'].replace("'", "\\'")}'`, (error, stdout, stderr) => {
+  exec(`blend-wapp-inst '${app_data['app']['name'].replace("'", "\\'")}' '${app_data['app']['category'].replace("'", "\\'")}' '${app_data['app']['summary'].replace("'", "\\'")}' '${app_data['app']['name'].replaceAll(' ', '-').replace("'", "\\'")}' '${app_data['app']['logo'].replace("'", "\\'")}' 'Network;BlendWebApp;' 'Web;App;' '${app_data['app']['pwa_url'].replace("'", "\\'")}'`, (error, stdout, stderr) => {
     if (error) {
       console.log(stderr)
       mainWindow.webContents.executeJavaScript("webview.send('is-wapp-installed', 'failed_install')")
