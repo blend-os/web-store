@@ -27,8 +27,6 @@ function createAppWindow() {
     width: 900,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
       preload: path.join(__dirname, 'src/app_preload.js'),
       webviewTag: true
     }
