@@ -22,7 +22,7 @@ Exec=blend-web-store --url '$website' --class-name $wapp
 Icon=${HOME}/.local/share/wapp-icons/$(basename "$icon")
 Terminal=false
 StartupWMClass=$wapp
-Categories=$categories
+Categories=BlendWebApp;$categories
 Keywords=$keywords" > "${HOME}/.local/share/applications/blend_wapp_${wapp}.desktop"
 mkdir -p "${HOME}/.local/share/wapp-icons"
 rm -f "${HOME}/.local/share/wapp-icons/$(basename "$icon")"
