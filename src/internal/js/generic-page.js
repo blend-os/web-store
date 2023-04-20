@@ -108,7 +108,7 @@ function show_featured_cards (rows, columns) {
                                 </div>
                             </div>
                         </div>
-                        <button id="featured-card` + app + `-checkout" onclick="check_out('` + app + `')" style="background-color: #000; border: none; padding-top: 10px; padding-bottom: 10px; font-weight: bold; border-top-left-radius: 0; border-top-right-radius: 0;" class="btn btn-primary install">View this app</button>
+                        <button id="featured-card` + app + `-checkout" onclick="featured_check_out('` + app + `')" style="background-color: #000; border: none; padding-top: 10px; padding-bottom: 10px; font-weight: bold; border-top-left-radius: 0; border-top-right-radius: 0;" class="btn btn-primary install">View this app</button>
                     </div>
                 </div>
             `)
