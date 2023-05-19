@@ -28,9 +28,17 @@ function createAppWindow() {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'src/app_preload.js'),
-      webviewTag: true
+      nodeIntegration: false,
+      nodeIntegrationInSubFrames: false,
+      contextIsolation: false,
+      allowRunningInsecureContent: false
     }
   })
+
+  let ua = mainWindow.webContents.userAgent;
+  ua = ua.replace(/Chrome\/[0-9\.-]*/,'');
+  ua = ua.replace(/Electron\/*/,'');
+  mainWindow.webContents.userAgent = ua;
 
   let menuTemplate = [
     {
@@ -67,6 +75,28 @@ function createAppWindow() {
   }
 
   mainWindow.loadURL(url)
+
+  var cookies = session.defaultSession.cookies;
+  cookies.on('changed', function(event, cookie, cause, removed) {
+    if (cookie.session && !removed) {
+      var url = util.format('%s://%s%s', (!cookie.httpOnly && cookie.secure) ? 'https' : 'http', cookie.domain, cookie.path);
+      console.log('url', url);
+      cookies.set({
+        url: url,
+        name: cookie.name,
+        value: cookie.value,
+        domain: cookie.domain,
+        path: cookie.path,
+        secure: cookie.secure,
+        httpOnly: cookie.httpOnly,
+        expirationDate: Math.floor(new Date().getTime()/1000)+1209600
+      }, function(err) {
+        if (err) {
+          log.error('Error trying to persist cookie', err, cookie);
+        }
+      });
+    }
+  })
 }
 
 app.whenReady().then(() => {
@@ -77,17 +107,54 @@ app.whenReady().then(() => {
   app.commandLine.appendSwitch('use-gl', 'desktop')
   app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder')
 
-  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36";
-    callback({ cancel: false, requestHeaders: details.requestHeaders });
-  });
-
   if (process.argv.includes('--class-name') && process.argv.includes('--url')) {
     app.setName(process.argv[process.argv.indexOf('--class-name') + 1])
     createAppWindow()
 
     mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-      shell.openExternal(url);
+      orig_url = process.argv[process.argv.indexOf('--url') + 1]
+      if (!/^https?:\/\//i.test(orig_url)) {
+        orig_url = 'http://' + orig_url;
+      }
+
+      // For apps like Canva, that allow for authentication using Google and Facebook accounts
+      if (!url.includes(new URL(orig_url).hostname.replace('www.', ''))) {
+        e.preventDefault();
+        shell.openExternal(url);
+      } else {
+        let menuTemplate = [
+          {
+            label: 'App',
+            submenu: [
+              {
+                label: 'Quit', accelerator: 'CmdOrCtrl+Q',
+                click: function () {
+                  app.quit()
+                }
+              }
+            ]
+          },
+          {
+            label: 'Back',
+            click: function () {
+              mainWindow.webContents.goBack()
+            }
+          },
+          {
+            label: 'Reload',
+            click: function () {
+              mainWindow.reload()
+            }
+          }
+        ]
+
+        return {
+          action: 'allow',
+          overrideBrowserWindowOptions: {
+            autoHideMenuBar: true
+          }
+        }
+      }
     });
 
     mainWindow.webContents.on('will-navigate', function (e, url) {
@@ -96,7 +163,8 @@ app.whenReady().then(() => {
         orig_url = 'http://' + orig_url;
       }
 
-      if (!url.includes(new URL(orig_url).hostname.replace('www.', ''))) {
+      // For apps like Canva, that allow for authentication using Google accounts
+      if (!url.includes(new URL(orig_url).hostname.replace('www.', '')) && !url.includes('accounts.google.com')) {
         e.preventDefault();
         shell.openExternal(url);
       }
