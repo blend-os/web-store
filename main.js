@@ -76,6 +76,7 @@ function createAppWindow() {
 
   mainWindow.loadURL(url)
 
+  // workaround: https://github.com/electron/electron/issues/9995#issuecomment-314999042
   var cookies = session.defaultSession.cookies;
   cookies.on('changed', function(event, cookie, cause, removed) {
     if (cookie.session && !removed) {
@@ -89,7 +90,7 @@ function createAppWindow() {
         path: cookie.path,
         secure: cookie.secure,
         httpOnly: cookie.httpOnly,
-        expirationDate: Math.floor(new Date().getTime()/1000)+1209600
+        expirationDate: Math.floor(new Date().getTime() / 1000) + 30*24*60*60
       }, function(err) {
         if (err) {
           log.error('Error trying to persist cookie', err, cookie);
