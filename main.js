@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain, shell, Notification, session } = require('electron')
 const { exec, spawn } = require("child_process")
 const path = require('path')
+const util = require('util')
 
 var mainWindow = undefined
 
@@ -36,8 +37,7 @@ function createAppWindow() {
   })
 
   let ua = mainWindow.webContents.userAgent;
-  ua = ua.replace(/Chrome\/[0-9\.-]*/,'');
-  ua = ua.replace(/Electron\/*/,'');
+  ua = ua.replace(/Electron\/*/, 'Chrome/113');
   mainWindow.webContents.userAgent = ua;
 
   let menuTemplate = [
@@ -80,7 +80,8 @@ function createAppWindow() {
   var cookies = session.defaultSession.cookies;
   cookies.on('changed', function(event, cookie, cause, removed) {
     if (cookie.session && !removed) {
-      var url = util.format('%s://%s%s', (!cookie.httpOnly && cookie.secure) ? 'https' : 'http', cookie.domain, cookie.path);
+      console.log(cookie)
+      var url = util.format('%s://%s%s', cookie.secure ? 'https' : 'http', cookie.domain, cookie.path);
       console.log('url', url);
       cookies.set({
         url: url,
